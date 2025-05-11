@@ -46,11 +46,87 @@ async function main() {
         browser.scripting.executeScript({
             target: { tabId: activeTab.id, allFrames: true },
             func: () => {
-                document.querySelectorAll("input[type=radio][id$='yes']").forEach(i => i.click());
+                const radioButtons = document.querySelectorAll("input[type=radio][id$='yes']");
+                radioButtons.forEach(i => i.click());
+                // Try to click the 'Submit Audit' button after clicking all YES radio buttons
+                const buttons = document.querySelectorAll('button');
+                let submitButton = null;
+                buttons.forEach(btn => {
+                    if (btn.textContent.trim() === 'Submit Audit') {
+                        submitButton = btn;
+                    }
+                });
+                if (submitButton) {
+                    setTimeout(() => submitButton.click(), 100);
+                }
+                // Visual feedback
+                const feedback = document.createElement('div');
+                feedback.style.position = 'fixed';
+                feedback.style.top = '50%';
+                feedback.style.left = '50%';
+                feedback.style.transform = 'translate(-50%, -50%)';
+                feedback.style.background = 'rgba(0, 128, 0, 0.8)';
+                feedback.style.color = 'white';
+                feedback.style.padding = '20px';
+                feedback.style.borderRadius = '10px';
+                feedback.style.zIndex = '10000';
+                feedback.style.fontSize = '18px';
+                feedback.textContent = 'Clicked ' + radioButtons.length + ' YES buttons and submitted!';
+                document.body.appendChild(feedback);
+                setTimeout(() => feedback.remove(), 2000);
             }
         });
     }
 
+    // Inject a button into the web page
+    browser.scripting.executeScript({
+        target: { tabId: activeTab.id, allFrames: true },
+        func: () => {
+            const pageButton = document.createElement('button');
+            pageButton.textContent = "Accept All";
+            pageButton.style.position = 'fixed';
+            pageButton.style.bottom = '20px';
+            pageButton.style.right = '20px';
+            pageButton.style.zIndex = '10000';
+            pageButton.style.padding = '10px';
+            pageButton.style.background = '#4CAF50';
+            pageButton.style.color = 'white';
+            pageButton.style.border = 'none';
+            pageButton.style.borderRadius = '5px';
+            pageButton.style.cursor = 'pointer';
+            pageButton.onclick = () => {
+                const radioButtons = document.querySelectorAll("input[type=radio][id$='yes']");
+                radioButtons.forEach(i => i.click());
+                // Try to click the 'Submit Audit' button after clicking all YES radio buttons
+                const buttons = document.querySelectorAll('button');
+                let submitButton = null;
+                buttons.forEach(btn => {
+                    if (btn.textContent.trim() === 'Submit Audit') {
+                        submitButton = btn;
+                    }
+                });
+                if (submitButton) {
+                    setTimeout(() => submitButton.click(), 100);
+                }
+                // Visual feedback
+                const feedback = document.createElement('div');
+                feedback.style.position = 'fixed';
+                feedback.style.top = '50%';
+                feedback.style.left = '50%';
+                feedback.style.transform = 'translate(-50%, -50%)';
+                feedback.style.background = 'rgba(0, 128, 0, 0.8)';
+                feedback.style.color = 'white';
+                feedback.style.padding = '20px';
+                feedback.style.borderRadius = '10px';
+                feedback.style.zIndex = '10000';
+                feedback.style.fontSize = '18px';
+                feedback.textContent = 'Clicked ' + radioButtons.length + ' YES buttons and submitted!';
+                document.body.appendChild(feedback);
+                setTimeout(() => feedback.remove(), 2000);
+            };
+            document.body.appendChild(pageButton);
+        }
+    });
 }
 
 main();
