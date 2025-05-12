@@ -15,6 +15,13 @@ A powerful browser extension designed to enhance your experience on `learn.reboo
 * **Audit Link Fixer** - Fix broken audit links with one click 🔗
 * **Audit Page Opener** - Quick access to audit pages 🔍
 
+## Showcase
+<p>
+    <img src="icons/ex1.png" alt="Reboot01 Enhancer Logo" width="400">
+</p>
+
+*A demonstration of how the extension buttons appear on your screen*
+
 ## Quick Install
 
 ### Firefox
