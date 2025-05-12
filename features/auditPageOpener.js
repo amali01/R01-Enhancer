@@ -67,19 +67,25 @@
   function createAuditButton() {
     const button = document.createElement("button");
     button.id = "auditButton";
-    button.textContent = "🔍 Audit Page";
+    button.textContent = "🔍";
+    button.title = "Open Audit Page";
     button.style.position = "fixed";
-    button.style.bottom = "20px";
+    button.style.bottom = "200px";
     button.style.left = "20px";
-    button.style.padding = "10px 15px";
+    button.style.width = "50px";
+    button.style.height = "50px";
     button.style.zIndex = "9999";
     button.style.backgroundColor = "#2c3e50";
     button.style.color = "white";
     button.style.border = "none";
-    button.style.borderRadius = "5px";
+    button.style.borderRadius = "50%";
     button.style.cursor = "pointer";
+    button.style.display = "flex";
+    button.style.alignItems = "center";
+    button.style.justifyContent = "center";
     button.style.boxShadow = "0 2px 6px rgba(0,0,0,0.3)";
-    button.style.fontSize = "14px";
+    button.style.fontSize = "20px";
+    button.style.padding = "0";
 
     button.addEventListener("click", openAuditPage);
     document.body.appendChild(button);
