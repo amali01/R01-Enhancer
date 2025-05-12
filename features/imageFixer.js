@@ -227,11 +227,11 @@
   async function toggleActive(btn) {
     active = !active;
     if (active) {
-      btn.textContent = '🖼️ Fix Images: ON';
+      btn.textContent = '🖼️';
       btn.style.background = '#2ecc71'; // Green when ON
       startObserver();
     } else {
-      btn.textContent = '🖼️ Fix Images: OFF';
+      btn.textContent = '🖼️';
       btn.style.background = '#e67e22'; // Orange when OFF
       stopObserver();
     }
@@ -239,21 +239,26 @@
 
   function addButton() {
     const btn = document.createElement('button');
-    btn.textContent = '🖼️ Fix Images: OFF';
+    btn.textContent = '🖼️';
+    btn.title = 'Fix Broken Images';
     Object.assign(btn.style, {
       position: 'fixed',
-      bottom: '70px',
+      bottom: '80px',
       left: '20px',
+      width: '50px',
+      height: '50px',
       zIndex: 10000,
-      padding: '10px 16px',
+      padding: '0',
       background: '#e67e22', // Initial state OFF color
       color: 'white',
       border: 'none',
-      borderRadius: '6px',
+      borderRadius: '50%',
       cursor: 'pointer',
-      boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-      fontSize: '14px',
-      fontWeight: 'bold',
+      boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
+      fontSize: '20px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
       transition: 'background-color 0.3s ease, opacity 0.3s ease' // Smooth transition
     });
     btn.addEventListener('mouseenter', () => {btn.style.opacity = '0.9';});
