@@ -83,17 +83,25 @@
     // Add a clickable button (always reliable even if keyboard shortcuts fail)
     function addClickableButton() {
         const button = document.createElement('button');
-        button.textContent = '✅ Select All YES';
+        button.textContent = '✅';
+        button.title = 'Accept All Audits';
         button.style.position = 'fixed';
-        button.style.bottom = '120px';
-        button.style.right = '20px';
+        button.style.bottom = '260px';
+        button.style.left = '20px';
         button.style.zIndex = '9999';
-        button.style.padding = '10px';
+        button.style.width = '50px';
+        button.style.height = '50px';
         button.style.background = '#4CAF50';
         button.style.color = 'white';
         button.style.border = 'none';
-        button.style.borderRadius = '5px';
+        button.style.borderRadius = '50%';
         button.style.cursor = 'pointer';
+        button.style.display = 'flex';
+        button.style.alignItems = 'center';
+        button.style.justifyContent = 'center';
+        button.style.boxShadow = '0 2px 6px rgba(0,0,0,0.3)';
+        button.style.fontSize = '20px';
+        button.style.padding = '0';
 
         button.addEventListener('click', function() {
             clickAllYesButtons();
