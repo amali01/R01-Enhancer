@@ -12,7 +12,7 @@ A powerful browser extension designed to enhance your experience on `learn.reboo
 * **Accept All Audits** - Click once to mark all audit options ✅
 * **Open All Objects** - Instantly unlock all projects in the graph 🚪
 * **Image Fixer** - Automatically repair broken images 🖼️
-* **Audit Link Fixer** - Fix broken audit links with one click 🔗 (coming soon)
+* **Audit Link Fixer** - Fix broken audit links with one click 🔗
 * **Audit Page Opener** - Quick access to audit pages 🔍
 
 ## Showcase
