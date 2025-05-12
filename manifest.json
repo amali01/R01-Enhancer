@@ -48,11 +48,12 @@
     },
     {
       "matches": [
-        "https://learn.reboot01.com/*"
+      "https://learn.reboot01.com/*"
       ],
       "js": ["features/auditLinkFixer.js"],
-      "run_at": "document_idle",
-      "all_frames": true
+      "run_at": "document_start",
+      "all_frames": false,
+      "world": "MAIN"
     },
     {
       "matches": [
@@ -66,6 +67,5 @@
   "web_accessible_resources": [
     "icons/*.png",
     "features/*.js"
-  ],
-  "content_security_policy": "script-src 'self'; object-src 'self'"
+  ]
 }
