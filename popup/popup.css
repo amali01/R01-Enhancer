@@ -1,0 +1,143 @@
+/* General body styling for the popup */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 10px;
+    background-color: #f4f7f9;
+    color: #333;
+    width: 380px; /* Fixed width for the popup */
+    box-sizing: border-box;
+}
+
+/* Container for all popup content */
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header section with title and version */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #3498db; /* Primary color */
+    color: white;
+    border-radius: 8px 8px 0 0;
+    margin: -10px -10px 10px -10px; /* Extend to edges */
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.3em;
+    font-weight: 600;
+}
+
+header .version {
+    font-size: 0.8em;
+    opacity: 0.8;
+}
+
+/* List of features */
+.feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* Spacing between feature items */
+    margin-bottom: 15px;
+}
+
+/* Individual feature item styling */
+.feature-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    background-color: #ffffff;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.feature-item:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.feature-info {
+    flex-grow: 1;
+    margin-right: 15px;
+}
+
+.feature-info label { /* Main label for the feature name */
+    font-weight: 500;
+    font-size: 1em;
+    color: #2c3e50;
+    display: block; /* Make label take full width */
+    margin-bottom: 3px;
+}
+
+.feature-description {
+    font-size: 0.85em;
+    color: #7f8c8d; /* Softer color for description */
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Styling for the toggle switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;  /* Width of the switch */
+    height: 28px; /* Height of the switch */
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc; /* Default background of the slider (off state) */
+    transition: .4s;
+    border-radius: 28px; /* Fully rounded slider track */
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px; /* Height of the knob */
+    width: 20px;  /* Width of the knob */
+    left: 4px;    /* Position from left when off */
+    bottom: 4px;  /* Position from bottom */
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%; /* Circular knob */
+}
+
+input:checked + .slider {
+    background-color: #2ecc71; /* Green background when on */
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2ecc71;
+}
+
+input:checked + .slider:before {
+    transform: translateX(22px); /* Move knob to the right when on */
+}
+
+/* Footer section */
+footer {
+    text-align: center;
+    font-size: 0.8em;
+    color: #95a5a6;
+    padding-top: 10px;
+    border-top: 1px solid #e0e0e0;
+    margin-top: 5px;
+}

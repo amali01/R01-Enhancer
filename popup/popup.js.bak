@@ -1,0 +1,136 @@
+// Feature information - no more settings, just info
+const features = {
+  acceptAll: {
+    id: 'acceptAll',
+    name: 'Accept All Audits',
+    description: 'Click the button at the bottom of the page to accept all audit questions',
+    icon: '✓'
+  },
+  openObjects: {
+    id: 'openObjects',
+    name: 'Open All Objects',
+    description: 'Click the button at the bottom of the page to unlock all projects',
+    icon: '🚪'
+  },
+  imageFixer: {
+    id: 'imageFixer',
+    name: 'Image Fixer',
+    description: 'Click the button at the bottom of the page to fix broken images',
+    icon: '🖼️'
+  },
+  auditLinkFixer: {
+    id: 'auditLinkFixer',
+    name: 'Audit Link Fixer',
+    description: 'Click the button at the bottom of the page to fix broken audit links',
+    icon: '🔗'
+  },
+  auditPageOpener: {
+    id: 'auditPageOpener',
+    name: 'Audit Page Opener',
+    description: 'Click the button at the bottom of the page to open the audit page',
+    icon: '🔍'
+  }
+};
+
+// Create feature info element
+function createFeatureElement(id, feature) {
+  const div = document.createElement('div');
+  div.className = 'feature-item';
+  div.innerHTML = `
+    <div class="feature-icon">${feature.icon}</div>
+    <div class="feature-info">
+      <div class="feature-name">${feature.name}</div>
+      <div class="feature-desc">${feature.description}</div>
+    </div>
+  `;
+  return div;
+}
+
+// Browser compatibility wrapper
+const browserAPI = chrome.browser || chrome;
+
+// Initialize popup
+document.addEventListener('DOMContentLoaded', async () => {
+  const featureList = document.querySelector('.feature-list');
+  
+  // Get extension info
+  browserAPI.runtime.sendMessage({ type: 'getInfo' }, (info) => {
+    // Update version
+    const credits = document.querySelector('.credits');
+    credits.innerHTML = credits.innerHTML.replace('v1.0.0', `v${info.version}`);
+    
+    // Populate features
+    Object.entries(features).forEach(([id, feature]) => {
+      const featureEl = createFeatureElement(id, feature);
+      featureList.appendChild(featureEl);
+    });
+  });
+      resolve();
+    });
+  });
+}
+
+// Notify content script of settings changes
+async function notifyContentScript(settings) {
+  try {
+    const tabs = await browserAPI.tabs.query({ active: true, currentWindow: true });
+    if (tabs[0]) {
+      browserAPI.tabs.sendMessage(tabs[0].id, {
+        type: 'settingsUpdated',
+        settings
+      }, (response) => {
+        if (browserAPI.runtime.lastError) {
+          console.log('Setting update notification may not have been received');
+          // No need to handle error - tab might not have content script loaded
+        }
+      });
+    }
+  } catch (err) {
+    console.error('Error notifying content script:', err);
+  }
+}
+
+// Initialize popup
+async function initPopup() {
+  const settings = await getSettings();
+  const featureList = document.querySelector('.feature-list');
+  
+  // Setup master toggle
+  const masterToggle = document.getElementById('master-toggle');
+  if (masterToggle) {
+    // Set initial state based on all features being enabled
+    const allEnabled = Object.values(settings.features).every(f => f.enabled);
+    masterToggle.checked = allEnabled;
+    
+    // Add master toggle event handler
+    masterToggle.addEventListener('change', async () => {
+      const isEnabled = masterToggle.checked;
+      const currentSettings = await getSettings();
+      
+      // Update all feature visibility
+      Object.keys(currentSettings.features).forEach(id => {
+        currentSettings.features[id].buttonVisible = isEnabled;
+        const toggle = document.querySelector(`.feature-toggle[data-feature="${id}"]`);
+        if (toggle) toggle.checked = isEnabled;
+      });
+      
+      // Save and notify
+      await saveSettings(currentSettings);
+      await notifyContentScript(currentSettings);
+    });
+  }        // Create and append feature elements in order
+  // Sort features by position for consistent order
+  const sortedFeatures = Object.entries(features).sort((a, b) => {
+    const posA = BUTTON_POSITIONS[a[0]] || 99;
+    const posB = BUTTON_POSITIONS[b[0]] || 99;
+    return posA - posB;
+  });
+  
+  sortedFeatures.forEach(([id, feature]) => {
+    const element = createFeatureElement(id, feature, settings.features[id]);
+    featureList.appendChild(element);
+  });
+}
+
+// Initialize when popup loads
+document.addEventListener('DOMContentLoaded', initPopup);
