@@ -158,34 +158,38 @@
         
         const btn = document.createElement('button');
         btn.id = 'reboot-enhancer-openall-btn';
-        btn.textContent = '🚪 Open All';
+        btn.textContent = '🚪';
+        btn.title = 'Open All Projects'; // Show text on hover
 
         Object.assign(btn.style, {
             position: 'fixed',
             bottom: '20px',
-            right: '20px',
-            zIndex: 9999,
-            padding: '12px 20px',
-            background: 'linear-gradient(135deg, #4CAF50, #45a049)',
-            color: '#fff',
+            left: '20px',
+            width: '50px',
+            height: '50px',
+            zIndex: '9999',
+            padding: '0',
+            background: '#4CAF50',
+            color: 'white',
             border: 'none',
-            borderRadius: '999px',
+            borderRadius: '50%',
             cursor: 'pointer',
-            fontSize: '16px',
-            fontWeight: '600',
-            boxShadow: '0 8px 20px rgba(0, 0, 0, 0.2)',
-            backdropFilter: 'blur(6px)',
-            transition: 'all 0.2s ease-in-out',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '20px',
+            boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
+            transition: 'all 0.2s ease'
         });
 
         btn.addEventListener('mouseenter', () => {
-            btn.style.transform = 'scale(1.05)';
-            btn.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.3)';
+            btn.style.transform = 'scale(1.1)';
+            btn.style.boxShadow = '0 4px 8px rgba(0,0,0,0.4)';
         });
 
         btn.addEventListener('mouseleave', () => {
             btn.style.transform = 'scale(1)';
-            btn.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.2)';
+            btn.style.boxShadow = '0 2px 6px rgba(0,0,0,0.3)';
         });
 
         btn.addEventListener('click', directUpdateDb);
@@ -247,8 +251,9 @@
                             const child = window.db.object.children[key];
                             if (child.attrs && (child.attrs.status === "blocked" || child.attrs.status === "available")) {
                                 const clonedAttrs = cloneObject(child.attrs);
-                                clonedAttrs.status = "succeeded";
-                                clonedAttrs.groupMin = 1;
+                                clonedAttrs.status = "available";
+                                clonedAttrs.hasStarted = true;
+                                clonedAttrs.inScope = true;
                                 window.db.object.children[key].attrs = clonedAttrs;
                                 updateCount++;
                             }
