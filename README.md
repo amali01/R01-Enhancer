@@ -22,18 +22,27 @@ A powerful browser extension designed to enhance your experience on `learn.reboo
 
 *A demonstration of how the extension buttons appear on your screen*
 
-## Quick Install
+## Installation
 
-### Firefox
-*Will be released soon. For now, you can clone the repository and:*
-1. Visit `about:debugging#/runtime/this-firefox`
-2. Click "Load Temporary Add-on..."
-3. Select any file in the extension's directory
+### Firefox Users
+1. Download `R01E_firefox.xpi` from the [Latest Release](https://github.com/amali01/R01-Enhancer/releases/latest)
+2. From Firefox's menu, select "Open File..." (or press Ctrl+O)
+3. Navigate to the downloaded `.xpi` file and open it
+4. Click "Install Now" in the software installation dialog
+5. Restart Firefox to complete installation
 
-### Chrome
-1. Clone this repository
-2. Enable Developer mode in `chrome://extensions/`
-3. Load unpacked extension
+### Chrome Users
+1. Download `R01E_chrome.zip` from the [Latest Release](https://github.com/amali01/R01-Enhancer/releases/latest)
+2. Extract (uncompress) the downloaded zip file
+3. Open Chrome and navigate to `chrome://extensions/`
+4. Enable "Developer mode" using the toggle in the top-right
+5. Click "Load unpacked" and select the extracted folder
+
+*Note: After installation, you'll see the extension buttons appear on any learn.reboot01.com page.*
+
+## Author
+
+[amali01](https://github.com/amali01)
 
 ## Acknowledgments
 
