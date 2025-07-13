@@ -31,10 +31,11 @@
       .then(() => console.log('📋 Command copied to clipboard!'))
       .catch(err => console.warn('Could not copy to clipboard:', err));
     
-    // Execute in console
+    // Execute in console without eval
     try {
-      // Using eval carefully just for console injection
-      eval(command);
+      // Instead of eval, create a function to run the command
+      const safeExecute = new Function(command);
+      safeExecute();
       return true;
     } catch (err) {
       console.error('❌ Failed to execute command:', err);
@@ -51,7 +52,7 @@
     // Create button
     const btn = document.createElement('button');
     btn.id = 'reboot-enhancer-audit-link-btn';
-    btn.innerHTML = '🔧';
+    btn.textContent = '🔧';
     btn.title = 'Fix Audit Link';
     Object.assign(btn.style, {
       position: 'fixed',
@@ -111,7 +112,7 @@
       const success = injectConsoleCommand(projectName);
       
       // Visual feedback
-      btn.innerHTML = success ? '✅' : '❌';
+      btn.textContent = success ? '✅' : '❌';
       
       // Update tooltip text
       const tooltip = btn.querySelector('span');

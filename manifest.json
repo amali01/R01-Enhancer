@@ -1,7 +1,12 @@
 {
   "manifest_version": 3,
   "name": "Reboot01 Enhancer",
-  "version": "1.0.0",
+  "version": "2.0.0",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{288070da-360d-41fd-a26e-ea8a8b540e73}"
+    }
+  },
   "description": "A collection of tools to enhance the Reboot01 Learn platform experience.",
   "icons": {
     "48": "icons/enhancer-48.png",
@@ -9,7 +14,9 @@
   },
   "permissions": [
     "storage",
-    "activeTab",
+    "activeTab"
+  ],
+  "host_permissions": [
     "https://learn.reboot01.com/*"
   ],
   "action": {
