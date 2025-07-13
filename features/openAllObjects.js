@@ -135,13 +135,13 @@
             // Inject code that checks for window.db and dispatches an event with the result
             injectAndExecuteCode(`
                 (function() {
-                    const hasDb = typeof window.db !== 'undefined' && 
-                                 window.db !== null && 
-                                 typeof window.db.object !== 'undefined' &&
-                                 window.db.object !== null &&
-                                 typeof window.db.object.children !== 'undefined';
+                    const hasDb = typeof db !== 'undefined' && 
+                                 db !== null && 
+                                 typeof db.object !== 'undefined' &&
+                                 db.object !== null &&
+                                 typeof db.object.children !== 'undefined';
                     
-                    window.dispatchEvent(new CustomEvent('${callbackName}', { 
+                    dispatchEvent(new CustomEvent('${callbackName}', { 
                         detail: hasDb
                     }));
                 })();
@@ -221,11 +221,11 @@
         injectAndExecuteCode(`
             (function() {
                 try {
-                    if (!window.db?.object?.children) {
-                        window.dispatchEvent(new CustomEvent('${updateCallbackName}', { 
+                    if (!db?.object?.children) {
+                        dispatchEvent(new CustomEvent('${updateCallbackName}', { 
                             detail: { 
                                 success: false, 
-                                error: "window.db.object.children not found" 
+                                error: "db.object.children not found" 
                             }
                         }));
                         return;
@@ -246,32 +246,32 @@
                     
                     // Update status
                     let updateCount = 0;
-                    for (const key in window.db.object.children) {
-                        if (Object.prototype.hasOwnProperty.call(window.db.object.children, key)) {
-                            const child = window.db.object.children[key];
+                    for (const key in db.object.children) {
+                        if (Object.prototype.hasOwnProperty.call(db.object.children, key)) {
+                            const child = db.object.children[key];
                             if (child.attrs && (child.attrs.status === "blocked" || child.attrs.status === "available")) {
                                 const clonedAttrs = cloneObject(child.attrs);
                                 clonedAttrs.status = "available";
                                 clonedAttrs.hasStarted = true;
                                 clonedAttrs.inScope = true;
-                                window.db.object.children[key].attrs = clonedAttrs;
+                                db.object.children[key].attrs = clonedAttrs;
                                 updateCount++;
                             }
                         }
                     }
                     
                     // Update start attribute
-                    if (window.db.object.attrs) {
-                        window.db.object.attrs.start = 0;
+                    if (db.object.attrs) {
+                        db.object.attrs.start = 0;
                     }
                     
                     // Report success
-                    window.dispatchEvent(new CustomEvent('${updateCallbackName}', { 
+                    dispatchEvent(new CustomEvent('${updateCallbackName}', { 
                         detail: { success: true, count: updateCount }
                     }));
                 } catch (error) {
                     // Report error
-                    window.dispatchEvent(new CustomEvent('${updateCallbackName}', { 
+                    dispatchEvent(new CustomEvent('${updateCallbackName}', { 
                         detail: { success: false, error: error.toString() }
                     }));
                 }

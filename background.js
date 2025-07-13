@@ -8,7 +8,7 @@ const extensionInfo = {
     'acceptAll': '✓ Click to accept all audit answers',
     'imageFixer': '🖼️ Click to fix broken images',
     'openObjects': '🚪 Click to unlock all projects',
-    'auditLinkFixer': '🔗 Click to fix broken audit links',
+    'auditLinkFixer': '🔧 Click to fix audit links',
     'auditPageOpener': '🔍 Click to open audit page'
   }
 };
