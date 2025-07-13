@@ -1,5 +1,5 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Reboot01 Enhancer",
   "version": "1.0.0",
   "description": "A collection of tools to enhance the Reboot01 Learn platform experience.",
@@ -12,14 +12,13 @@
     "activeTab",
     "https://learn.reboot01.com/*"
   ],
-  "browser_action": {
+  "action": {
     "default_icon": "icons/enhancer-48.png",
     "default_title": "Reboot01 Enhancer",
     "default_popup": "popup/popup.html"
   },
   "background": {
-    "scripts": ["background.js"],
-    "persistent": true
+    "scripts": ["background.js"]
   },
   "content_scripts": [
     {
@@ -65,7 +64,13 @@
     }
   ],
   "web_accessible_resources": [
-    "icons/*.png",
-    "features/*.js"
+    {
+      "resources": ["icons/*.png"],
+      "matches": ["https://learn.reboot01.com/*"]
+    },
+    {
+      "resources": ["features/*.js"],
+      "matches": ["https://learn.reboot01.com/*"]
+    }
   ]
 }
