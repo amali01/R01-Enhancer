@@ -1,48 +1,45 @@
 (function () {
   'use strict';
 
-  const prefixes = [
-    "mobile-dev", "ai", "cybersecurity", "blockchain", "devops", "gaming", "java/projects"
-  ];
-  const originalFetch = window.fetch;
-  let active = false;
+  function getProjectNameFromURL() {
+    // Try to get project name from current URL
+    const urlMatch = window.location.pathname.match(/\/subjects\/([^\/\?\#]+)/);
+    if (urlMatch) return urlMatch[1];
 
-  function getProjectNameFromURL(url) {
-    const match = url.match(/\/subjects\/([^\/\?\#]+)/);
-    return match ? match[1] : null;
+    // Try to get from page content if URL doesn't contain it
+    const pageTitle = document.querySelector('h1')?.textContent || '';
+    const titleMatch = pageTitle.match(/^([\w-]+)/i);
+    if (titleMatch) return titleMatch[1];
+    
+    return null;
   }
 
-  async function tryFetchWithPrefixes(project, input, init) {
-    for (const prefix of prefixes) {
-      const newUrl = input.replace(`/subjects/${project}`, `/subjects/${prefix}/${project}`);
-      try {
-        const res = await originalFetch(newUrl, { method: 'HEAD' });
-        if (res.ok) {
-          console.log(`✅ Fixed audit fetch to: ${newUrl}`);
-          return originalFetch(newUrl, init);
-        }
-      } catch (err) {
-        // ignore and try next
-      }
+  function injectConsoleCommand(projectName) {
+    if (!projectName) {
+      console.error('❌ Could not detect project name');
+      return false;
     }
-
-    console.warn(`❌ Could not fix audit fetch for project: ${project}`);
-    return originalFetch(input, init); // fallback to original
-  }
-
-  function overrideFetch() {
-    window.fetch = async function (input, init) {
-      let url = typeof input === 'string' ? input : input.url;
-
-      if (active && url.includes('/subjects/') && !url.includes('/subjects/prefixes/')) {
-        const project = getProjectNameFromURL(url);
-        if (project) {
-          return tryFetchWithPrefixes(project, url, init);
-        }
-      }
-
-      return originalFetch(input, init);
-    };
+    
+    const command = `db.campus.value.children["bh-module"].children["${projectName}"].attrs.validations[0].form = '/api/content/root/01-edu_module/content/${projectName}/audit/README.md';`;
+    
+    // Log the command to console
+    console.log('%c✅ Audit Fix Command:', 'color: green; font-weight: bold');
+    console.log(command);
+    
+    // Copy to clipboard
+    navigator.clipboard.writeText(command)
+      .then(() => console.log('📋 Command copied to clipboard!'))
+      .catch(err => console.warn('Could not copy to clipboard:', err));
+    
+    // Execute in console
+    try {
+      // Using eval carefully just for console injection
+      eval(command);
+      return true;
+    } catch (err) {
+      console.error('❌ Failed to execute command:', err);
+      return false;
+    }
   }
 
   function addButton() {
@@ -51,44 +48,100 @@
       existingBtn.remove();
     }
 
+    // Create button
     const btn = document.createElement('button');
     btn.id = 'reboot-enhancer-audit-link-btn';
-    btn.textContent = '🔗';
+    btn.innerHTML = '🔧';
+    btn.title = 'Fix Audit Link';
     Object.assign(btn.style, {
       position: 'fixed',
       bottom: '140px',
       left: '20px',
-      width: 'auto',
+      width: '50px',
       height: '50px',
       zIndex: '9999',
-      padding: '0 16px',
+      padding: '0',
       background: '#2980b9',
       color: 'white',
       border: 'none',
-      borderRadius: '25px',
+      borderRadius: '50%',  // Make it circular
       cursor: 'pointer',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
-      fontSize: '16px',
-      fontWeight: 'bold',
-      whiteSpace: 'nowrap',
-      transition: 'background-color 0.3s ease'
+      fontSize: '20px',  // Slightly larger icon
+      transition: 'all 0.3s ease'
     });
+    
+    // Create tooltip element
+    const tooltip = document.createElement('span');
+    tooltip.textContent = 'Fix Audit';
+    Object.assign(tooltip.style, {
+      position: 'absolute',
+      left: '60px',  // Position to the right of the button
+      background: '#333',
+      color: 'white',
+      padding: '5px 10px',
+      borderRadius: '4px',
+      fontSize: '12px',
+      opacity: '0',
+      visibility: 'hidden',
+      transition: 'all 0.3s ease',
+      whiteSpace: 'nowrap'
+    });
+    btn.appendChild(tooltip);
 
     btn.addEventListener('mouseenter', () => {
-      btn.style.opacity = '0.9';
+      btn.style.transform = 'translateY(-2px)';
+      // Show tooltip
+      tooltip.style.opacity = '1';
+      tooltip.style.visibility = 'visible';
     });
 
     btn.addEventListener('mouseleave', () => {
-      btn.style.opacity = '1';
+      btn.style.transform = 'translateY(0)';
+      // Hide tooltip
+      tooltip.style.opacity = '0';
+      tooltip.style.visibility = 'hidden';
     });
 
     btn.addEventListener('click', () => {
-      active = !active;
-      btn.innerHTML = active ? '🔗<span style="position:absolute;font-size:8px;top:80%;left:calc(100% - 25px);transform:translateY(-80%)">ON</span>' : '🔗<span style="position:absolute;font-size:8px;top:75%;left:calc(100% - 26px);transform:translateY(-50%)">OFF</span>';
-      btn.style.background = active ? '#27ae60' : '#2980b9';
+      const projectName = getProjectNameFromURL();
+      const success = injectConsoleCommand(projectName);
+      
+      // Visual feedback
+      btn.innerHTML = success ? '✅' : '❌';
+      
+      // Update tooltip text
+      const tooltip = btn.querySelector('span');
+      if (tooltip) {
+        tooltip.textContent = success ? 'Injected' : 'Failed';
+      }
+      
+      // Reset button after 3 seconds
+      setTimeout(() => {
+        btn.style.background = '#2980b9';
+        btn.innerHTML = '🔧';
+        
+        // Recreate tooltip
+        const newTooltip = document.createElement('span');
+        newTooltip.textContent = 'Fix Audit';
+        Object.assign(newTooltip.style, {
+          position: 'absolute',
+          left: '60px',
+          background: '#333',
+          color: 'white',
+          padding: '5px 10px',
+          borderRadius: '4px',
+          fontSize: '12px',
+          opacity: '0',
+          visibility: 'hidden',
+          transition: 'all 0.3s ease',
+          whiteSpace: 'nowrap'
+        });
+        btn.appendChild(newTooltip);
+      }, 3000);
     });
 
     document.body.appendChild(btn);
@@ -109,8 +162,6 @@
   }
 
   try {
-    // Initialize fetch override immediately
-    overrideFetch();
     // Add button when DOM is ready
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', addButton);
